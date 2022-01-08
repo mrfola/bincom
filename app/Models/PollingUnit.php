@@ -11,8 +11,10 @@ use App\Models\LocalGovernment;
 class PollingUnit extends Model
 {
     use HasFactory;
+    
     protected $table = 'polling_unit';
     protected $primaryKey = 'uniqueid';
+    public $timestamps = false; //removes created_at and updated_at default timestamps
 
     public function Ward()
     {

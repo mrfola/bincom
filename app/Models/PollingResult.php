@@ -11,6 +11,7 @@ class PollingResult extends Model
     use HasFactory;
 
     protected $table = "announced_pu_results";
+    public $timestamps = false; //removes created_at and updated_at default timestamps
 
     public function pollingUnit()
     {

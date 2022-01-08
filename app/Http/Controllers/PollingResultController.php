@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PollingResult;
 use App\Models\PollingUnit;
 use App\Models\LocalGovernment;
+use Carbon\Carbon;
 
 class PollingResultController extends Controller
 {
@@ -31,18 +32,17 @@ class PollingResultController extends Controller
         return view('polling-result', $data);
     }
 
-    public function showPollingResultsByLga()
+    public function show()
     {
-        //get list of lga
-        $localGovernments = LocalGovernment::all();
-        $data = ["localGovernments" => $localGovernments];
+        $pollingUnits = PollingUnit::get();
+        $data = ["pollingUnits" => $pollingUnits];
 
-        return view('polling-result-lga', $data);
+        return view('create-polling-result', $data);
     }
 
     public function getPollingResultsByLga(Request $request)
     {
-        $request->validate(["lga"]);
+        $request->validate(["lga" => "required"]);
         $lga_id = $request->lga;
 
         //get details of the local government
@@ -136,5 +136,59 @@ class PollingResultController extends Controller
         }
 
         return $cummulativePollingResults;
+    }
+
+    
+    public function showPollingResultsByLga()
+    {
+        //get list of lga
+        $localGovernments = LocalGovernment::all();
+        $data = ["localGovernments" => $localGovernments];
+
+        return view('polling-result-lga', $data);
+    }
+
+    public function create(Request $request)
+    {
+        $request->validate(
+        [
+            "PDP" => "required",
+            "DPP" => "required",
+            "ACN" => "required",
+            "PPA" => "required",
+            "CDC" => "required",
+            "JP" => "required",
+            "ANPP" => "required",
+            "LABO" => "required",
+            "CPP" => "required"
+        ]
+        );
+        $pollingResultByParty = 
+        [
+        "PDP" => $request->PDP, "DPP" => $request->DPP, "ACN" => $request->ACN,
+        "PPA" => $request->PPA, "CDC" => $request->CDC, "JP" => $request->JP,
+        "AANP" => $request->ANPP, "LABO" => $request->LABO, "CPP" => $request->CPP,        
+        ];
+
+        $pollingUnitId = $request->Polling_Unit;
+        $username = Auth()->user()->name;
+        $date_entered =  Carbon::now()->toDateTimeString();
+        $ip_address = $request->ip();
+
+        foreach($pollingResultByParty as $index => $value)
+        {
+            $pollingResult = new PollingResult();
+
+            $pollingResult->polling_unit_uniqueid = $pollingUnitId;
+            $pollingResult->party_abbreviation = $index;
+            $pollingResult->party_score = $value;
+            $pollingResult->entered_by_user = $username;
+            $pollingResult->date_entered = $date_entered;
+            $pollingResult->user_ip_address = $ip_address;
+
+            $pollingResult->save();
+        }
+
+        return back()->with(["message" => "Polling Result Saved Successfully"]);
     }
 }

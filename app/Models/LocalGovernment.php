@@ -14,6 +14,7 @@ class LocalGovernment extends Model
 
     protected $table = "lga";
     protected $primaryKey = 'uniqueid';
+    public $timestamps = false; //removes created_at and updated_at default timestamps
 
     public function wards()
     {

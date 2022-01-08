@@ -12,6 +12,7 @@ class WardResult extends Model
 
     protected $table = 'announced_ward_results';
     protected $primaryKey = 'result_id';
+    public $timestamps = false; //removes created_at and updated_at default timestamps
 
     public function ward()
     {

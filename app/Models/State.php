@@ -9,8 +9,10 @@ use App\Models\StateResult;
 class State extends Model
 {
     use HasFactory;
+    
     protected $table = "states";
     protected $primaryKey = 'state_id';
+    public $timestamps = false; //removes created_at and updated_at default timestamps
 
     public function wards()
     {
