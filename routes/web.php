@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function()
     Route::get('/dashboard', [PollingUnitController::class, 'index'])->name('dashboard');
     Route::post('/polling-results', [PollingResultController::class, 'index'])->name('polling_result_index');
     Route::get('/polling-results', [PollingResultController::class, 'show'])->name('polling_result_show');
-    Route::post('/polling-results', [PollingResultController::class, 'create'])->name('polling_result_create');
+    Route::post('/create-polling-results', [PollingResultController::class, 'create'])->name('polling_result_create');
     Route::get('/polling-results-lga', [PollingResultController::class, 'showPollingResultsByLga'])->name('polling_result_lga_show');
     Route::post('/polling-results-lga', [PollingResultController::class, 'getPollingResultsByLga'])->name('polling_result_lga_get');
 

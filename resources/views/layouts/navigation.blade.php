@@ -15,6 +15,12 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('polling_result_show')" :active="request()->routeIs('polling_result_show')">
+                        {{ __('Add Polling Results') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('polling_result_lga_show')" :active="request()->routeIs('polling_result_lga_show')">
+                        {{ __('Get Polling Results By LGA') }}
+                    </x-nav-link>
                 </div>
             </div>
 
