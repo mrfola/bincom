@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PollingResultController;
+use App\Http\Controllers\PollingUnitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +19,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
+
+Route::middleware('auth')->group(function()
+{
+    Route::get('/dashboard', [PollingUnitController::class, 'index'])->name('dashboard');
+    Route::post('/polling-results', [PollingResultController::class, 'index'])->name('polling_result_index');
+    Route::get('/polling-results-lga', [PollingResultController::class, 'showPollingResultsByLga'])->name('polling_result_lga_show');
+    Route::post('/polling-results-lga', [PollingResultController::class, 'getPollingResultsByLga'])->name('polling_result_lga_get');
+
+});
 
 require __DIR__.'/auth.php';
